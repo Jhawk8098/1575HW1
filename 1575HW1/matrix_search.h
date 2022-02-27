@@ -76,8 +76,7 @@ Modifies sol to contain the locations of the start and end characters of the wor
 */
 void matrix_search(int sol[], string word, int rows, int cols, char** matrix);
 
-void patternSearch(char** grid, string word, int R, int C);
-bool search2D(char** grid, int row, int col, string word, int R, int C);
+bool search2D(char** grid, int row, int col, string word, int R, int C, int sol[]);
 
 
 #endif

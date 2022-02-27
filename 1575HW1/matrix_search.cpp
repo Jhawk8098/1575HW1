@@ -61,78 +61,38 @@ void delete_matrix(int rows, char** matrix)
 }
 
 
-void matrix_search(int sol[], string word, int rows, int cols, char** matrix)
-{
-  for (int i = 0; i < cols; i++)
-  {
-    for (int j = 0; j < rows; j++)
-    {
-      if (matrix[i][j] == word[0])
-      {
-        if (matrix[i + 1][j + 1] == word[1])
-        {
-          
-        }
-      }
-    }
-  }
-  sol[0] = -1;
-  sol[1] = -1;
-  sol[2] = -1;
-  sol[3] = -1;
-  return;
-}
-
-
-
-// This function searches in
-// all 8-direction from point
-// (row, col) in grid[][]
-bool search2D(char** grid, int row, int col,
-  string word, int R, int C)
+// searches in all directions from a starting point
+bool search2D(char** grid, int row, int col, string word, int R, int C, int sol[])
 {
   int x[] = { -1, -1, -1,  0, 0,  1, 1, 1 };
   int y[] = { -1,  0,  1, -1, 1, -1, 0, 1 };
 
-  // If first character of word doesn't
-  // match with given starting point in grid.
   if (grid[row][col] != word[0])
     return false;
 
-  //std::cout << "checking other letters" << endl;
-
   int len = word.length();
 
-  // Search word in all 8 directions
-  // starting from (row, col)
   for (int dir = 0; dir < 8; dir++) {
-    // Initialize starting point
-    // for current direction
+
     int k, rd = row + x[dir], cd = col + y[dir];
 
-    // First character is already checked,
-    // match remaining characters
     for (k = 1; k < len; k++) {
-      // If out of bound break
       if (rd >= R || rd < 0 || cd >= C || cd < 0)
         break;
 
-      // If not matched,  break
       if (grid[rd][cd] != word[0 + k])
       {
-        //std::cout << "letters didn't match " << dir << " " << rd << " " << cd << endl;
         break;
       }
-
-      // Moving in particular direction
       rd += x[dir], cd += y[dir];
     }
 
-    // If all character matched, then value of k must
-    // be equal to length of word
     if (k == len)
     {
-      //std::cout << "true statement" << endl;
+      sol[0] = row;
+      sol[1] = col;
+      sol[2] = rd - x[dir];
+      sol[3] = cd - y[dir];
       return true;
     }
   }
@@ -141,15 +101,19 @@ bool search2D(char** grid, int row, int col,
 
 // Searches given word in a given
 // matrix in all 8 directions
-void patternSearch(char** grid, string word,
-  int R, int C)
+void matrix_search(int sol[], string word, int rows, int cols, char** matrix)
 {
-  // Consider every point as starting
-  // point and search given word
-  for (int row = 0; row < R; row++)
-    for (int col = 0; col < C; col++)
-      if (search2D(grid, row, col, word, R, C))
-        cout << "pattern found at "
-        << row << ", "
-        << col << endl;
+  sol[0] = -1;
+  sol[1] = -1;
+  sol[2] = -1;
+  sol[3] = -1;
+  for (int row = 0; row < rows; row++)
+    for (int col = 0; col < cols; col++)
+      if (search2D(matrix, row, col, word, rows, cols, sol))
+      {
+        std::cout << "Start pos:(" << sol[0] << ", " << sol[1] << ") to End pos : (" << sol[2] << ", " << sol[3] << ")" << endl;
+        return;
+      }
+  std::cout << "The pattern was not found.";
+  return;
 }
