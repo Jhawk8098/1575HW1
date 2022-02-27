@@ -99,6 +99,8 @@ bool search2D(char** grid, int row, int col,
   if (grid[row][col] != word[0])
     return false;
 
+  //std::cout << "checking other letters" << endl;
+
   int len = word.length();
 
   // Search word in all 8 directions
@@ -116,8 +118,11 @@ bool search2D(char** grid, int row, int col,
         break;
 
       // If not matched,  break
-      if (grid[row][col] != word[0])
+      if (grid[rd][cd] != word[0 + k])
+      {
+        //std::cout << "letters didn't match " << dir << " " << rd << " " << cd << endl;
         break;
+      }
 
       // Moving in particular direction
       rd += x[dir], cd += y[dir];
@@ -126,7 +131,10 @@ bool search2D(char** grid, int row, int col,
     // If all character matched, then value of k must
     // be equal to length of word
     if (k == len)
+    {
+      //std::cout << "true statement" << endl;
       return true;
+    }
   }
   return false;
 }
